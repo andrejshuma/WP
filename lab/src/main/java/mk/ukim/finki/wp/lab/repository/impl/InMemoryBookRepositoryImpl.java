@@ -19,4 +19,15 @@ public class InMemoryBookRepositoryImpl implements BookRepository {
     public List<Book> searchBooks(String text, Double rating) {
         return DataHolder.books.stream().filter(b->b.getTitle().contains(text)&&b.getAverageRating()>=rating).toList();
     }
+
+    @Override
+    public void deleteById(Long id) {
+        DataHolder.books.removeIf(b->b.getId().equals(id));
+    }
+
+    @Override
+    public void save(Book book) {
+        DataHolder.books.removeIf(b->b.getId().equals(book.getId()));
+        DataHolder.books.add(book);
+    }
 }
