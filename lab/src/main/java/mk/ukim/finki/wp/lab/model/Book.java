@@ -1,27 +1,42 @@
 package mk.ukim.finki.wp.lab.model;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Entity
 @AllArgsConstructor
+@Setter
+@NoArgsConstructor
+@Table(name = "books")
 public class Book {
-    String title;
-    String genre;
-    double averageRating;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String title;
+    private String genre;
+    private double averageRating;
+
+    @OneToOne
+    @JoinColumn(name = "authors.id")
     private Author author;
 
-    public Book(String title, String genre, double averageRating,Author author) {
-        this.id = (long) (Math.random()*1000);
-        this.title = title;
+    public Book(String s, String genre, double rating, Author author) {
+        this.title = s;
         this.genre = genre;
-        this.averageRating = averageRating;
+        this.averageRating = rating;
         this.author = author;
     }
 
-
-    public Book( ) {
-
+    @Override
+    public String toString() {
+        return "Title: " + title +
+                ", Genre: " + genre +
+                ", Rating: " + averageRating +
+                ", Author: " + author.toString();
     }
 }
